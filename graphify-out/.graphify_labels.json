@@ -6,11 +6,7 @@
   "4": "room.ts",
   "5": "check-vendor.ts",
   "6": "open-4wd-signaling README",
-  "7": "ws-provider.ts",
   "8": "signaling-service/register-auth.ts",
-  "9": "provider-conformance.ts",
-  "10": "protocol/index.ts",
-  "11": "signSignalEnvelope",
   "12": "Cloudflare Workers Public Deployment Template",
   "13": "check-constants.ts",
   "14": "prepare-graphify-release.mjs",
@@ -27,6 +23,5 @@
   "25": "vitest.config.ts",
   "26": "vitest.e2e.config.ts",
   "27": "chain-identity.ts",
-  "28": "workflow.spec.ts",
-  "29": "wire-parser.spec.ts"
+  "28": "workflow.spec.ts"
 }
