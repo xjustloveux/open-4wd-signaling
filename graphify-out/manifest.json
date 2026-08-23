@@ -312,12 +312,12 @@
     "semantic_hash": "f50e8250ab588343e6e74c471829fc34"
   },
   "scripts/prepare-graphify-release.mjs": {
-    "ast_hash": "d3610cf77ba0ffd510ee0311558f9c5b",
-    "semantic_hash": "d3610cf77ba0ffd510ee0311558f9c5b"
+    "ast_hash": "1bc6e3430f3ac0730ba09bffd80fe382",
+    "semantic_hash": "1bc6e3430f3ac0730ba09bffd80fe382"
   },
   "scripts/prepare-graphify-release.test.mjs": {
-    "ast_hash": "08d2a3d2a4092bee021dfc75a3a8f090",
-    "semantic_hash": "08d2a3d2a4092bee021dfc75a3a8f090"
+    "ast_hash": "3f0fa97315fda64b23f071d7ad1dd79d",
+    "semantic_hash": "3f0fa97315fda64b23f071d7ad1dd79d"
   },
   "scripts/protocol-limits.spec.ts": {
     "ast_hash": "913b7313b9f82ad236e18c4be23be9bd",
