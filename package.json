@@ -25,7 +25,7 @@
     "worker:types": "wrangler types adapters/worker/worker-configuration.d.ts --config deploy/cloudflare/wrangler.jsonc --include-runtime false",
     "worker:types:check": "wrangler types adapters/worker/worker-configuration.d.ts --config deploy/cloudflare/wrangler.jsonc --include-runtime false --check",
     "worker:dry-run": "wrangler deploy --config deploy/cloudflare/wrangler.jsonc --dry-run",
-    "test:scripts": "node --test scripts/comment-hook-runner.test.mjs scripts/eslint-comment-quality.test.mjs scripts/prepare-graphify-release.test.mjs",
+    "test:scripts": "node --test scripts/comment-hook-runner.test.mjs scripts/eslint-comment-quality.test.mjs scripts/prepare-graphify-release.test.mjs scripts/run-graphify-release.test.mjs",
     "test": "vitest run",
     "e2e": "vitest run --config vitest.e2e.config.ts",
     "start": "tsx adapters/node/server.ts"
