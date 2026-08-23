@@ -1,0 +1,10 @@
+verifyDepsBeforeRun: error
+allowBuilds:
+  # esbuild＝vitest 與 tsx 的建置器，放行
+  esbuild: true
+  # sharp＝經 wrangler 帶入的 Node 端原生影像模組；本 repo 的 Worker 與 Node adapter
+  # 都不處理影像，沿主專案供應鏈立場拒建
+  sharp: false
+  # workerd＝Cloudflare Workers 執行期二進位；deploy/cloudflare/worker.e2e.spec.ts 以
+  # unstable_dev({ local: true }) 起 miniflare 實跑 Worker，缺它 pnpm e2e 無法執行——必須放行
+  workerd: true

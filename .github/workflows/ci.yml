@@ -1,0 +1,82 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # pnpm 版本只由 package.json 的 packageManager 釘定；action 不再另帶 version，
+      # 否則兩處不一致時 pnpm/action-setup 會以 Multiple versions of pnpm specified 直接中止。
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm worker:types:check
+      - run: pnpm check:types
+      - run: pnpm test:scripts
+      - run: pnpm test
+      - run: pnpm e2e
+      # Vendored protocol core 與 MANIFEST 的位元組一致性可在本 repo 自給自足驗證，
+      # 不讀取其他 repository；對 locked main SHA 的 remote raw 比對留待 main 公開後
+      # 的 provenance gate，main 尚 private 時不用暫時 PAT 或 GitHub App。
+      - run: pnpm check:vendor -- --local-only
+      - run: pnpm exec wrangler deploy --config deploy/cloudflare/wrangler.jsonc --dry-run --outdir "$RUNNER_TEMP/open4wd-signaling-wrangler-dry-run"
+      - run: docker build -f deploy/docker/Dockerfile -t open4wd-signaling-ci .
+      # 只 build 不 run 看不出「映像建得出來但啟動即崩」（例如映像缺 tsx 解析 @open4wd/* 別名所需的
+      # tsconfig.json）。對剛建好的映像跑與部署後相同的 smoke：簽章 register → 收到 room-state。
+      - name: Smoke the built image
+        run: |
+          set -eo pipefail
+          docker run -d --name open4wd-signaling-smoke -p 8080:8080 open4wd-signaling-ci
+          ok=0
+          for i in $(seq 1 30); do
+            if pnpm exec tsx scripts/smoke.ts ws://127.0.0.1:8080; then ok=1; break; fi
+            sleep 1
+          done
+          echo "--- signaling 容器 log ---"
+          docker logs open4wd-signaling-smoke || true
+          docker rm -f open4wd-signaling-smoke || true
+          if [ "$ok" != "1" ]; then
+            echo "::error::映像起不來或 smoke 未通過——見上方容器 log。"
+            exit 1
+          fi
+      # 常數 authority 只需公開 Specs 與本 repo；固定 commit 避免 live branch 漂移，且刻意
+      # 放在所有 repo-wide 掃描與 Docker build 後，避免嵌入的 Specs checkout 污染掃描／context。
+      - name: Checkout immutable public Specs for signaling constants
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: xjustloveux/open-4wd-specs
+          ref: 730d3a694f390df67ef916b1e7ca7c764be9add4
+          path: .ci/open-4wd-specs
+          lfs: false
+      - name: Verify signaling-owned constant values
+        run: pnpm check:constants
+        env:
+          O4_SPECS_DIR: ${{ github.workspace }}/.ci/open-4wd-specs
+
+  # 官方上游 required check；不成為一般驗證、build 或 deploy 的 needs。
+  comment-quality:
+    if: github.repository == 'xjustloveux/open-4wd-signaling'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # pnpm 版本只由 package.json 的 packageManager 釘定；action 不再另帶 version，
+      # 否則兩處不一致時 pnpm/action-setup 會以 Multiple versions of pnpm specified 直接中止。
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:comments:self-test
+      - run: pnpm check:comments

@@ -1,0 +1,88 @@
+name: Deploy operator fork
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: operator-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # pnpm 版本只由 package.json 的 packageManager 釘定；action 不再另帶 version，
+      # 否則兩處不一致時 pnpm/action-setup 會以 Multiple versions of pnpm specified 直接中止。
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Fail closed on required settings
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          INTERNAL_HMAC_SECRET: ${{ secrets.INTERNAL_HMAC_SECRET }}
+          TURN_SHARED_SECRET: ${{ secrets.TURN_SHARED_SECRET }}
+          TURN_URLS: ${{ vars.TURN_URLS }}
+        run: |
+          : "${CLOUDFLARE_API_TOKEN:?}" "${CLOUDFLARE_ACCOUNT_ID:?}" "${INTERNAL_HMAC_SECRET:?}"
+          if [ "${#INTERNAL_HMAC_SECRET}" -lt 32 ]; then
+            echo "INTERNAL_HMAC_SECRET must contain at least 32 characters." >&2
+            exit 1
+          fi
+          if { [ -n "$TURN_SHARED_SECRET" ] && [ -z "$TURN_URLS" ]; } || { [ -z "$TURN_SHARED_SECRET" ] && [ -n "$TURN_URLS" ]; }; then
+            echo "TURN_SHARED_SECRET and TURN_URLS must be configured together." >&2
+            exit 1
+          fi
+          if [ -n "$TURN_SHARED_SECRET" ]; then
+            if [ "${#TURN_SHARED_SECRET}" -lt 32 ]; then echo "TURN_SHARED_SECRET must contain at least 32 characters." >&2; exit 1; fi
+            case "$TURN_URLS" in ,*|*,|*,,*) echo "TURN_URLS cannot contain empty entries." >&2; exit 1;; esac
+            if printf '%s' "$TURN_URLS" | tr ',' '\n' | grep -Evq '^turns?:[^[:space:]]+$'; then
+              echo "Every TURN_URLS entry must be a non-empty turn: or turns: URL." >&2
+              exit 1
+            fi
+          fi
+
+      - name: Verify before deploy
+        run: |
+          pnpm worker:types:check
+          pnpm test
+          pnpm worker:dry-run
+
+      # Wrangler cannot attach a production secret before a Worker exists. The code fails closed
+      # with 503/404 while INTERNAL_HMAC_SECRET/TURN bindings are absent, so this also makes a
+      # first-time fork deployment reproducible without exposing a usable unconfigured service.
+      - name: Create or update fail-closed Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec wrangler deploy --config deploy/cloudflare/wrangler.jsonc
+
+      - name: Inject Worker secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          INTERNAL_HMAC_SECRET: ${{ secrets.INTERNAL_HMAC_SECRET }}
+          TURN_SHARED_SECRET: ${{ secrets.TURN_SHARED_SECRET }}
+          TURN_URLS: ${{ vars.TURN_URLS }}
+        run: |
+          printf '%s' "$INTERNAL_HMAC_SECRET" | pnpm exec wrangler secret put INTERNAL_HMAC_SECRET --config deploy/cloudflare/wrangler.jsonc
+          if [ -n "$TURN_SHARED_SECRET" ]; then
+            printf '%s' "$TURN_SHARED_SECRET" | pnpm exec wrangler secret put TURN_SHARED_SECRET --config deploy/cloudflare/wrangler.jsonc
+            printf '%s' "$TURN_URLS" | pnpm exec wrangler secret put TURN_URLS --config deploy/cloudflare/wrangler.jsonc
+          fi
+
+      - name: Deploy configured Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec wrangler deploy --config deploy/cloudflare/wrangler.jsonc

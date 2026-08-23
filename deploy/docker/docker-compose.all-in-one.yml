@@ -1,0 +1,47 @@
+# 單機全包：signaling＋coturn（TURN/STUN）一台起齊。
+# TURN_SHARED_SECRET 單一 env 同時餵兩邊——token 簽發（signaling）與驗證（coturn）天然對齊。
+# coturn 組態走 CLI 旗標（與 open-4wd-turn repo 的 conf 模板同義；單機路徑免渲染步驟）。
+# 必填四鍵（TURN_SHARED_SECRET／TURN_URLS／REALM／EXTERNAL_IP）採 :? 硬檢：
+# 未設或空值＝compose 直接拒起——否則空 secret 會讓 coturn 以可自鑄憑證狀態對公網開中繼。
+services:
+  signaling:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: '8080'
+      TURN_SHARED_SECRET: ${TURN_SHARED_SECRET:?未設}
+      TURN_URLS: ${TURN_URLS:?未設}
+    ports:
+      - '8080:8080'
+  coturn:
+    # 與 open-4wd-turn 公版 repo 同值釘版（升版兩 repo 同步）。
+    image: coturn/coturn:4.14.0
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - -n
+      - --log-file=stdout
+      - --fingerprint
+      - --no-multicast-peers
+      - --no-cli
+      - --use-auth-secret
+      - --static-auth-secret=${TURN_SHARED_SECRET:?未設}
+      - --realm=${REALM:?未設}
+      - --external-ip=${EXTERNAL_IP:?未設}
+      - --min-port=${MIN_PORT:-49152}
+      - --max-port=${MAX_PORT:-65535}
+      - --user-quota=${USER_QUOTA:-12}
+      - --total-quota=${TOTAL_QUOTA:-1200}
+      - --max-bps=${MAX_BPS:-0}
+      - --denied-peer-ip=10.0.0.0-10.255.255.255
+      - --denied-peer-ip=172.16.0.0-172.31.255.255
+      - --denied-peer-ip=192.168.0.0-192.168.255.255
+      - --denied-peer-ip=127.0.0.0-127.255.255.255
+      - --denied-peer-ip=169.254.0.0-169.254.255.255
+      - --denied-peer-ip=100.64.0.0-100.127.255.255
+      - --denied-peer-ip=0.0.0.0-0.255.255.255
+      - --denied-peer-ip=::1
+      - --denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+      - --denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff

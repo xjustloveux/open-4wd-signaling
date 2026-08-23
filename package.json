@@ -1,0 +1,53 @@
+{
+  "name": "open-4wd-signaling",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "type": "module",
+  "scripts": {
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint .",
+    "check:types": "tsc -p tsconfig.json --noEmit",
+    "check:comments": "tsx scripts/comment-quality.ts",
+    "check:comments:self-test": "tsx scripts/comment-quality.self-test.ts",
+    "comments:hook:staged": "node scripts/comment-hook-runner.mjs staged",
+    "comments:hook:full": "node scripts/comment-hook-runner.mjs full",
+    "comments:hooks:setup": "node scripts/setup-comment-hooks.mjs setup",
+    "comments:hooks:disable": "node scripts/setup-comment-hooks.mjs disable",
+    "check:constants": "tsx scripts/check-constants.ts",
+    "check:vendor": "tsx scripts/check-vendor.ts",
+    "check:vendor:local": "tsx scripts/check-vendor.ts --local-only",
+    "vendor:sync": "tsx scripts/vendor-sync.ts",
+    "worker:types": "wrangler types adapters/worker/worker-configuration.d.ts --config deploy/cloudflare/wrangler.jsonc --include-runtime false",
+    "worker:types:check": "wrangler types adapters/worker/worker-configuration.d.ts --config deploy/cloudflare/wrangler.jsonc --include-runtime false --check",
+    "worker:dry-run": "wrangler deploy --config deploy/cloudflare/wrangler.jsonc --dry-run",
+    "test:scripts": "node --test scripts/comment-hook-runner.test.mjs scripts/eslint-comment-quality.test.mjs scripts/prepare-graphify-release.test.mjs",
+    "test": "vitest run",
+    "e2e": "vitest run --config vitest.e2e.config.ts",
+    "start": "tsx adapters/node/server.ts"
+  },
+  "dependencies": {
+    "@ipld/dag-cbor": "10.0.1",
+    "@noble/curves": "2.2.0",
+    "@noble/hashes": "2.2.0",
+    "@scure/base": "2.2.0",
+    "tsx": "4.23.1",
+    "ws": "8.21.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.1.2",
+    "@types/ws": "8.18.1",
+    "eslint": "10.8.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.65.0",
+    "vitest": "4.1.10",
+    "wrangler": "4.115.0"
+  }
+}

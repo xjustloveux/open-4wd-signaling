@@ -1,0 +1,32 @@
+# 宿主機依賴是 pnpm 絕對路徑符號連結，拷進映像會覆蓋容器內安裝、run 時必炸
+node_modules
+
+# 與映像無關
+.git
+.github
+.superpowers
+docs
+e2e
+deploy
+
+# 本機密鑰與 Cloudflare 開發狀態
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+**/.wrangler
+
+# 測試檔不進執行映像（Dockerfile 只 COPY core／adapters，這裡再擋一層）
+**/*.spec.ts
+scripts
+
+# 本機建置、測試與編輯器產物
+dist
+coverage
+*.tsbuildinfo
+.idea
+.vscode
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

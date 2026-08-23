@@ -1,0 +1,121 @@
+{
+  "upstreamRepo": "https://github.com/xjustloveux/open-4wd",
+  "upstreamBranch": "master",
+  "upstreamSrcRoot": "src/",
+  "files": [
+    {
+      "kind": "vendored",
+      "local": "signaling-service/wire.ts",
+      "upstream": "src/signaling-service/wire.ts",
+      "sha256": "47069bfa4bf795f4371e8fb59d5f55ec93da2b47f642532a28dd5c9c97074505"
+    },
+    {
+      "kind": "vendored",
+      "local": "signaling-service/wire-parser.ts",
+      "upstream": "src/signaling-service/wire-parser.ts",
+      "sha256": "b1cfc61efeef1cc543308fb07a072da4975a405e64d9383e1c68e790766e1a2b"
+    },
+    {
+      "kind": "vendored",
+      "local": "signaling-service/wire-parser.spec.ts",
+      "upstream": "src/signaling-service/wire-parser.spec.ts",
+      "sha256": "d5216e0df3e2482d779b1842396f864940e7b011b65b11d80f680e9722c8ad6a"
+    },
+    {
+      "kind": "vendored",
+      "local": "signaling-service/register-auth.ts",
+      "upstream": "src/signaling-service/register-auth.ts",
+      "sha256": "671d5093b141579e2670fa2ae37123fe4ac790399a61b1a267895e3db254f991"
+    },
+    {
+      "kind": "vendored",
+      "local": "signaling-service/signal-envelope.ts",
+      "upstream": "src/signaling-service/signal-envelope.ts",
+      "sha256": "cbe0e16571728986327681ac8304e94ea53f6753217b509b4250e25618843724"
+    },
+    {
+      "kind": "vendored",
+      "local": "room-identity/index.ts",
+      "upstream": "src/room-identity/index.ts",
+      "sha256": "ab9812f25779d803426905fa92bdfe6f88fe90d89e0fdcda911c6a9e63c73eda"
+    },
+    {
+      "kind": "vendored",
+      "local": "room-identity/room-id.ts",
+      "upstream": "src/room-identity/room-id.ts",
+      "sha256": "87f300f986ba8e6b5a79af8da63ee6e182e4c0ad8d530911ca3a1dd5cf9c0ab0"
+    },
+    {
+      "kind": "vendored",
+      "local": "key-manager/ed25519.ts",
+      "upstream": "src/key-manager/ed25519.ts",
+      "sha256": "c394562859511276db8f605e4539f48af0cd205b88f15b6787e1c581930ce1c6"
+    },
+    {
+      "kind": "vendored",
+      "local": "key-manager/signed-payload.ts",
+      "upstream": "src/key-manager/signed-payload.ts",
+      "sha256": "666bdfb0cf915d5034038dbeb21e1cc6adc12ba9676b664824115f098caca1d0"
+    },
+    {
+      "kind": "vendored",
+      "local": "encoding/bytes.ts",
+      "upstream": "src/encoding/bytes.ts",
+      "sha256": "abba606adc2fcfdd4406b8aa6f4df02af40fd8114177beb76ccf5718d45264fb"
+    },
+    {
+      "kind": "vendored",
+      "local": "ledger/serialize.ts",
+      "upstream": "src/ledger/serialize.ts",
+      "sha256": "367dbbea69aba04cb7346d38206327158ae47511b3084439897b20796c17736a"
+    },
+    {
+      "kind": "shim",
+      "local": "ledger/chain-identity.ts",
+      "upstream": null,
+      "sha256": null
+    },
+    {
+      "kind": "shim",
+      "local": "key-manager/index.ts",
+      "upstream": null,
+      "sha256": null
+    },
+    {
+      "kind": "vendored",
+      "local": "../../../e2e/vendor/ws-provider.ts",
+      "upstream": "src/signaling-service/ws-provider.ts",
+      "sha256": "b5fd1b4870804e5eb9c62468fd61314297a4be24a34b3b01ff36b8ec51e6b9ba"
+    },
+    {
+      "kind": "vendored",
+      "local": "../../../e2e/vendor/session-observers.ts",
+      "upstream": "src/signaling-service/session-observers.ts",
+      "sha256": "d7e3fdff023f8e33f68a256bd8e31ce2094ab6c5ca356d4a6e9f1f9cd6d2cd95"
+    },
+    {
+      "kind": "shim",
+      "local": "../../../e2e/vendor/register-auth.ts",
+      "upstream": null,
+      "sha256": null
+    },
+    {
+      "kind": "shim",
+      "local": "../../../e2e/vendor/wire.ts",
+      "upstream": null,
+      "sha256": null
+    },
+    {
+      "kind": "shim",
+      "local": "../../../e2e/vendor/wire-parser.ts",
+      "upstream": null,
+      "sha256": null
+    },
+    {
+      "kind": "shim",
+      "local": "../../../e2e/vendor/signal-envelope.ts",
+      "upstream": null,
+      "sha256": null
+    }
+  ]
+}

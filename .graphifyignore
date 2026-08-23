@@ -1,0 +1,14 @@
+# graphify 白名單（include 清單制：先全排除、逐項 re-include）
+# 收錄核心程式、介面卡、部署模板、腳本、端對端測試、README 與 Vitest 設定。
+# 其他文件與設定資料不作為 Graphify 輸入；檔案仍由版本庫保留並接受審查。
+/*
+!/core/
+!/adapters/
+!/deploy/
+!/scripts/
+!/e2e/
+!/README.md
+!/vitest.config.ts
+!/vitest.e2e.config.ts
+# 設定 json 不入圖（07-25：graphify 把 .json 當 code、鍵抽成 $schema/version… 雜訊節點）
+*.json

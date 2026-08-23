@@ -1,0 +1,12 @@
+services:
+  signaling:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      PORT: '8080'
+      # 置於反向代理後方且該代理會覆寫 x-forwarded-for 時才設為 true
+      TRUST_PROXY: 'false'
+    restart: unless-stopped

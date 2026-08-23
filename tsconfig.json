@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "DOM"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "paths": {
+      "@open4wd/interfaces": ["./core/protocol/shim/interfaces.ts"],
+      "@open4wd/system-constants": ["./core/protocol/shim/system-constants.ts"]
+    }
+  },
+  "include": ["core", "adapters", "e2e", "scripts", "*.config.ts"]
+}

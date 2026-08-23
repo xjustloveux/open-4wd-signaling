@@ -1,0 +1,30 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "open-4wd-signaling",
+  "main": "../../adapters/worker/worker.ts",
+  "compatibility_date": "2026-07-24",
+  "durable_objects": {
+    "bindings": [
+      { "name": "ROOMS", "class_name": "RoomDurableObject" },
+      { "name": "ADMISSION", "class_name": "AdmissionLimiterDurableObject" },
+      { "name": "TOKEN_ISSUERS", "class_name": "TokenIssuerDurableObject" },
+    ],
+  },
+  "exports": {
+    "RoomDurableObject": {
+      "type": "durable-object",
+      "storage": "sqlite",
+    },
+    "AdmissionLimiterDurableObject": {
+      "type": "durable-object",
+      "storage": "sqlite",
+    },
+    "TokenIssuerDurableObject": {
+      "type": "durable-object",
+      "storage": "sqlite",
+    },
+  },
+  "secrets": {
+    "required": ["INTERNAL_HMAC_SECRET"],
+  },
+}
