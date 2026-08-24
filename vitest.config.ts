@@ -17,6 +17,7 @@ export default defineConfig({
       '**/*.e2e.spec.ts',
       'scripts/comment-hook-runner.test.mjs',
       'scripts/eslint-comment-quality.test.mjs',
+      'scripts/issue-maintenance.test.mjs',
       'scripts/prepare-graphify-release.test.mjs',
       'scripts/run-graphify-release.test.mjs',
     ],
