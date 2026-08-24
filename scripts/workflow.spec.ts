@@ -115,7 +115,7 @@ describe('public CI and release workflow contracts', () => {
     const verify = workflow.slice(0, workflow.indexOf('comment-quality:'));
     expect(verify).toContain('pnpm test:scripts');
     expect(pkg.scripts['test:scripts']).toBe(
-      'node --test scripts/comment-hook-runner.test.mjs scripts/eslint-comment-quality.test.mjs scripts/prepare-graphify-release.test.mjs scripts/run-graphify-release.test.mjs',
+      'node --test scripts/comment-hook-runner.test.mjs scripts/eslint-comment-quality.test.mjs scripts/issue-maintenance.test.mjs scripts/prepare-graphify-release.test.mjs scripts/run-graphify-release.test.mjs',
     );
   });
 

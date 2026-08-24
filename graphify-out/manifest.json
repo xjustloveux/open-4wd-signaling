@@ -311,6 +311,14 @@
     "ast_hash": "f50e8250ab588343e6e74c471829fc34",
     "semantic_hash": "f50e8250ab588343e6e74c471829fc34"
   },
+  "scripts/issue-maintenance.mjs": {
+    "ast_hash": "d05fb6c90a2de6629bd990327832c3a7",
+    "semantic_hash": "d05fb6c90a2de6629bd990327832c3a7"
+  },
+  "scripts/issue-maintenance.test.mjs": {
+    "ast_hash": "9307f685dcbde1df434bf97cf0a09fc7",
+    "semantic_hash": "9307f685dcbde1df434bf97cf0a09fc7"
+  },
   "scripts/prepare-graphify-release.mjs": {
     "ast_hash": "1bc6e3430f3ac0730ba09bffd80fe382",
     "semantic_hash": "1bc6e3430f3ac0730ba09bffd80fe382"
@@ -372,12 +380,12 @@
     "semantic_hash": "6ccd1fd546b983c4f94e5e491c1c2884"
   },
   "scripts/workflow.spec.ts": {
-    "ast_hash": "2dd4db8c98672ba8a8e5b8e0412e5996",
-    "semantic_hash": "2dd4db8c98672ba8a8e5b8e0412e5996"
+    "ast_hash": "c575e5de927591b0708e5d773c9203b7",
+    "semantic_hash": "c575e5de927591b0708e5d773c9203b7"
   },
   "vitest.config.ts": {
-    "ast_hash": "938448f169e014bed8877e3330752db1",
-    "semantic_hash": "938448f169e014bed8877e3330752db1"
+    "ast_hash": "922ca8b8aaaaa9bab1ec32a68c26725e",
+    "semantic_hash": "922ca8b8aaaaa9bab1ec32a68c26725e"
   },
   "vitest.e2e.config.ts": {
     "ast_hash": "56808543787a1acdfce448f7f1b784bc",
