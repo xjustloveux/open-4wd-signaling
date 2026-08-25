@@ -1,5 +1,7 @@
 # open-4wd-signaling
 
+[![CI](https://github.com/xjustloveux/open-4wd-signaling/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/xjustloveux/open-4wd-signaling/actions/workflows/ci.yml) [![License: MIT](docs/badges/license-mit.svg)](LICENSE)
+
 Open4WD 的 WebRTC signaling 公版實作，交換 SDP 與 ICE candidate 以協助瀏覽器建立 P2P
 連線；連線建立後即退出資料路徑，不參與遊戲資料傳輸。
 
