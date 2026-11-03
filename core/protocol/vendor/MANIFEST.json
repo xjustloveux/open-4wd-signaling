@@ -49,7 +49,7 @@
       "kind": "vendored",
       "local": "key-manager/ed25519.ts",
       "upstream": "src/key-manager/ed25519.ts",
-      "sha256": "c394562859511276db8f605e4539f48af0cd205b88f15b6787e1c581930ce1c6"
+      "sha256": "405bfab851c176c01ce15aefaed472c785b37dc3d0f05d11224978462e304a0b"
     },
     {
       "kind": "vendored",

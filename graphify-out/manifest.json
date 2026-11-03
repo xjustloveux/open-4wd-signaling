@@ -88,8 +88,8 @@
     "semantic_hash": "626f28e4cd251237c132cd8298671861"
   },
   "core/protocol/vendor/key-manager/ed25519.ts": {
-    "ast_hash": "4f061eecd61345e1c487843f24cb385e",
-    "semantic_hash": "4f061eecd61345e1c487843f24cb385e"
+    "ast_hash": "f1f9238288a51c3910988f3988089e16",
+    "semantic_hash": "f1f9238288a51c3910988f3988089e16"
   },
   "core/protocol/vendor/key-manager/index.ts": {
     "ast_hash": "628c7918912681c167f5d798163c5ee1",
